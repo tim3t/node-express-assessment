@@ -1,6 +1,6 @@
 const fs = require('fs');
 const axios = require('axios');
-const { url } = require('inspector');
+const process = require('process');
 
 function readUrlFile(path) {
 	fs.readFile(path, 'utf-8', async function callback(err, data) {
@@ -16,20 +16,19 @@ function readUrlFile(path) {
 			}
 			let result = await Promise.allSettled(promiseUrls);
 			for (res of result) {
-				// makeNewFile(result);
 				if (res.status === 'rejected') {
-					console.log(res.status, res.hostname);
+					console.error(`Error: ${res.reason.hostname} - ${res.status}`);
 				}
 				else {
-					console.log(res.status, res.value.config.url);
+					makeNewFile(res);
 				}
 			}
 		}
 	});
 }
 
-function makeNewFile(data, err) {
-	fs.writeFile(data.hostname, data.data, (err) => {
+async function makeNewFile(res, err) {
+	fs.writeFile(`${res.value.config.url}.txt`, res.value.data, (err) => {
 		if (err) {
 			console.log(`Error writing file`, err);
 		}
@@ -38,3 +37,5 @@ function makeNewFile(data, err) {
 		}
 	});
 }
+
+let path = process.argv;
