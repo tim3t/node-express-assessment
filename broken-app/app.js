@@ -2,17 +2,16 @@ const express = require('express');
 let axios = require('axios');
 var app = express();
 
-app.post('/', function(req, res, next) {
-  try {
-    let results = req.body.developers.map(async d => {
-      return await axios.get(`https://api.github.com/users/${d}`);
-    });
-    let out = results.map(r => ({ name: r.data.name, bio: r.data.bio }));
-
-    return res.send(JSON.stringify(out));
-  } catch {
-    next(err);
-  }
+app.post('/', (req, res) => {
+	try {
+		let results = req.body.developers.map(async (devName) => {
+			return await axios.get(`https://api.github.com/users/${devName}`);
+		});
+		let out = results.map((result) => ({ name: result.data.name, bio: result.data.bio }));
+		return res.send(JSON.stringify(out));
+	} catch (err) {
+		console.error('Error!', err);
+	}
 });
 
 app.listen(3000);

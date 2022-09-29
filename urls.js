@@ -39,4 +39,4 @@ async function makeNewFile(res, err) {
 	});
 }
 
-let path = process.argv;
+let path = process.argv[0];
