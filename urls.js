@@ -28,7 +28,8 @@ function readUrlFile(path) {
 }
 
 async function makeNewFile(res, err) {
-	fs.writeFile(`${res.value.config.url}.txt`, res.value.data, (err) => {
+	// fs.writeFile(`${res.value.config.url}.txt`, res.value.data, (err) => {
+	fs.writeFile('File.txt', res.value.data, (err) => {
 		if (err) {
 			console.log(`Error writing file`, err);
 		}
